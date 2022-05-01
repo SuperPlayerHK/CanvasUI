@@ -9,7 +9,7 @@ You can, just make a new class that implement UIComponent and either UIPosition 
 
 e.g. A Circle Shape element
 ```
-class Circle implements UIRect {
+class Circle implements UIComponent, UIRect {
   // Called when this component needs to be drawn.
   draw(): void {
     // Draw a circle...
@@ -17,7 +17,7 @@ class Circle implements UIRect {
 
   // Called when this component needs to be updated.
   update(): void {
-    // Update...
+    // Update... (Most of the time, you don't need this)
   }
   
   x: number;
@@ -32,3 +32,13 @@ class Circle implements UIRect {
   }
 }
 ```
+
+# How to draw it?
+Just call the draw method inside a loop.
+
+```
+let c = new Circle(...)
+
+... loop
+c.draw();
+... other code
