@@ -8,7 +8,8 @@ And it's lightweight so don't execpt much from it.
 You can, just make a new class that implement UIComponent and either UIPosition or UIRect.
 
 e.g. A Circle Shape element
-```class Circle implements UIRect {
+```
+class Circle implements UIRect {
   // Called when this component needs to be drawn.
   draw(): void {
     // Draw a circle...
