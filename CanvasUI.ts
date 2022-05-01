@@ -377,3 +377,5 @@ class ExpendLabel implements UIComponent, UIRect {
         })
     }
 }
+
+/** CHECKOUT TEST */
