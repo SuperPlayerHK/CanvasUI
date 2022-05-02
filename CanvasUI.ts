@@ -25,6 +25,12 @@ interface UIListItem {
     selected: boolean;
 }
 
+/**
+ * Check if a point is inside a rectangle.
+ * @param rect The box to check.
+ * @param pos The position to check.
+ * @returns 
+ */
 const insideOf = (rect: UIRect, pos: UIPosition): boolean => {
     return pos.x >= rect.x && pos.x <= rect.x + rect.width && pos.y >= rect.y && pos.y <= rect.y + rect.height;
 }
@@ -34,6 +40,7 @@ class Box implements UIComponent, UIRect {
     y: number;
     width: number;
     height: number;
+    shapeColor: string = "black";
 
     constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
         this.x = x;
@@ -45,11 +52,40 @@ class Box implements UIComponent, UIRect {
     ctx: CanvasRenderingContext2D;
 
     draw(): void {
+        this.ctx.fillStyle = this.shapeColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     update(): void {
         // Do nothing.
+    }
+}
+
+class Circle implements UIComponent, UIRect {
+    draw(): void {
+        this.ctx.fillStyle = this.shapeColor;
+        this.ctx.beginPath();
+        this.ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
+
+    update(): void {
+        
+    }
+
+    ctx: CanvasRenderingContext2D;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    shapeColor: string = "black";
+
+    constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.ctx = ctx;
     }
 }
 
