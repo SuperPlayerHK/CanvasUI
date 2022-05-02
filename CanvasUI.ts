@@ -83,7 +83,7 @@ class Panel implements UIComponent, UIRect {
 
 class Label implements UIComponent, UIPosition {
     draw(): void {
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = this.textColor;
         this.ctx.font = this.font;
         this.ctx.fillText(this.text, this.x, this.y);
     }
@@ -96,7 +96,8 @@ class Label implements UIComponent, UIPosition {
     y: number;
     text: string = "";
     ctx: CanvasRenderingContext2D;
-
+    
+    textColor: string = "black";
     font: string = "20px Arial";
 
     constructor(x: number, y: number, ctx: CanvasRenderingContext2D) {
@@ -110,10 +111,10 @@ class Label implements UIComponent, UIPosition {
 class Button implements UIComponent, UIRect {
     ctx: CanvasRenderingContext2D;
     draw(): void {
-        this.ctx.fillStyle = "darkgray";
+        this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
         this.ctx.font = this.font;
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = this.textColor;
         this.ctx.fillText(this.text, this.x + this.width / 2 - this.ctx.measureText(this.text).width / 2, this.y + this.height / 2 + 5);
     }
 
@@ -127,6 +128,8 @@ class Button implements UIComponent, UIRect {
     height: number;
     text: string = "";
 
+    backgroundColor: string = "darkgray";
+    textColor: string = "black";
     font: string = "20px Arial";
 
     onClick: () => void = () => {}
@@ -149,7 +152,7 @@ class Button implements UIComponent, UIRect {
 class Checkbox implements UIComponent, UIRect {
     ctx: CanvasRenderingContext2D;
     draw(): void {
-        this.ctx.fillStyle = this.checked ? "green" : "red";
+        this.ctx.fillStyle = this.checked ? this.activeColor : this.inactiveColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
@@ -161,6 +164,9 @@ class Checkbox implements UIComponent, UIRect {
     y: number;
     width: number;
     height: number;
+
+    activeColor: string = "green";
+    inactiveColor: string = "red";
 
     checked: boolean = false;
 
@@ -186,10 +192,10 @@ class Slider implements UIComponent, UIPosition {
     ctx: CanvasRenderingContext2D;
 
     draw(): void {
-        this.ctx.fillStyle = "darkgray";
+        this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
 
-        this.ctx.fillStyle = "lightgray";
+        this.ctx.fillStyle = this.sliderColor;
         this.ctx.fillRect(this.x, this.y, this.width * (this.value / this.max), this.height);
     }
 
@@ -202,11 +208,16 @@ class Slider implements UIComponent, UIPosition {
     width: number;
     height: number;
 
+    backgroundColor: string = "darkgray";
+    sliderColor: string = "lightgray";
+
     value: number = 0;
     max: number = 100;
     dragging: boolean = false;
 
+    onDrag: () => void = () => {}
     onChange: (value: number) => void = () => {}
+    onRelease: () => void = () => {}
 
     constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
         this.x = x;
@@ -215,8 +226,14 @@ class Slider implements UIComponent, UIPosition {
         this.height = height;
         this.ctx = ctx;
 
-        this.ctx.canvas.addEventListener('mousedown', () => { this.dragging = true; });
-        this.ctx.canvas.addEventListener('mouseup', () => { this.dragging = false; });
+        this.ctx.canvas.addEventListener('mousedown', () => { 
+            this.onDrag();
+            this.dragging = true;
+        });
+        this.ctx.canvas.addEventListener('mouseup', () => { 
+            this.onRelease();
+            this.dragging = false;
+        });
 
         this.ctx.canvas.addEventListener('mousemove', (e: MouseEvent) => {
             if (!this.dragging)
@@ -245,19 +262,17 @@ class Textbox implements UIComponent, UIRect {
     ]
 
     draw(): void {
-        this.ctx.fillStyle = this.selected ? "darkgray" : "lightgray";
+        this.ctx.fillStyle = this.selected ? this.activeColor : this.inactiveColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
 
         this.ctx.font = "20px Arial";
 
         if (this.enteredText == "") {
-            this.ctx.fillStyle = "white";
+            this.ctx.fillStyle = this.placeholderTextColor;
             this.ctx.fillText(this.placeholderText, this.x + this.width / 2 - this.ctx.measureText(this.placeholderText).width / 2, this.y + this.height / 2 + 5);
         } else {
-            this.ctx.fillStyle = "black";
-
+            this.ctx.fillStyle = this.textColor;
             let text: string = (this.isPassword ? repeat("*", this.enteredText.length) : this.enteredText);
-
             this.ctx.fillText(text, this.x + this.width / 2 - this.ctx.measureText(text).width / 2, this.y + this.height / 2 + 5);
         }
     }
@@ -276,6 +291,12 @@ class Textbox implements UIComponent, UIRect {
     selected: boolean = false;
 
     isPassword: boolean = false;
+
+    activeColor: string = "darkgray";
+    inactiveColor: string = "lightgray";
+
+    textColor: string = "black";
+    placeholderTextColor: string = "gray";
 
     constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
         this.x = x;
@@ -324,18 +345,18 @@ class ExpendLabel implements UIComponent, UIRect {
     draw(): void {
         let height = parseInt(this.font.split(' ')[0].split('px')[0])
 
-        this.ctx.fillStyle = "darkgray";
+        this.ctx.fillStyle = this.titleBarColor;
         this.ctx.fillRect(this.x, this.y, this.width, height);
         
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = this.textColor;
         this.ctx.font = this.font;
         this.ctx.fillText(this.expended ? "-" : "+", this.x, this.y + height);
 
         if (this.expended) {
-            this.ctx.fillStyle = "lightgray";
+            this.ctx.fillStyle = this.contentBackgroundColor;
             this.ctx.fillRect(this.x, this.y + height, this.width, this.height);
 
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = this.textColor;
             this.ctx.fillText(this.text, this.x, this.y + height * 2);
         }
     }
@@ -352,6 +373,10 @@ class ExpendLabel implements UIComponent, UIRect {
     font: string = "20px Arial";
     expended: boolean = false;
     text: string = "";
+
+    textColor: string = "black";
+    titleBarColor: string = "darkgray";
+    contentBackgroundColor: string = "lightgray";
 
     constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
         this.x = x;
@@ -377,5 +402,3 @@ class ExpendLabel implements UIComponent, UIRect {
         })
     }
 }
-
-/** CHECKOUT TEST */
