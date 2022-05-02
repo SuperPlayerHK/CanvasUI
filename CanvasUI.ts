@@ -388,6 +388,9 @@ class ExpendLabel implements UIComponent, UIRect {
         this.ctx.font = this.font;
         this.ctx.fillText(this.expended ? "-" : "+", this.x, this.y + height);
 
+        this.ctx.fillStyle = this.titleTextColor;
+        this.ctx.fillText(this.title, this.x + 20, this.y + height);
+
         if (this.expended) {
             this.ctx.fillStyle = this.contentBackgroundColor;
             this.ctx.fillRect(this.x, this.y + height, this.width, this.height);
@@ -409,10 +412,12 @@ class ExpendLabel implements UIComponent, UIRect {
     font: string = "20px Arial";
     expended: boolean = false;
     text: string = "";
+    title: string = "";
 
     textColor: string = "black";
     titleBarColor: string = "darkgray";
     contentBackgroundColor: string = "lightgray";
+    titleTextColor: string = "black";
 
     constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
         this.x = x;
@@ -437,4 +442,32 @@ class ExpendLabel implements UIComponent, UIRect {
             }
         })
     }
+}
+
+class Cursor implements UIComponent {
+    draw(): void {
+        this.ctx.fillStyle = this.cursorColor;
+        this.ctx.fillRect(this.mousePosition.x, this.mousePosition.y, this.cursorWidth, this.cursorWidth);
+    }
+    update(): void {
+        
+    }
+
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx;
+        this.ctx.canvas.style.cursor = "none";
+
+        this.ctx.canvas.addEventListener('mousemove', (e: MouseEvent) => {
+            this.mousePosition.x = e.clientX;
+            this.mousePosition.y = e.clientY;
+        })
+    }
+
+    ctx: CanvasRenderingContext2D;
+    mousePosition: UIPosition = { x: 0, y: 0 };
+
+    cursorColor: string = "black";
+    cursorWidth: number = 1;
+
+    isVisible: boolean = true;
 }

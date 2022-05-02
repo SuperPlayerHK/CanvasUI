@@ -2,41 +2,38 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 
-let title = new Label(0, 20, ctx);
-title.text = "This is CanvasUI, a lightweight UI library for HTML5 canvas.";
+// Try edit these values to see the effect
 
-let expandable = new ExpendLabel(0, 25, 500, 25, ctx);
-expandable.text = "Fun fact: Nearly 99% of people will click on the plus sign.";
+let lbl_Title = new Label(0, 60, ctx);
+lbl_Title.text = "CanvasUI";
+lbl_Title.font = "bold 60px Arial";
 
-let textbox = new Textbox(0, 100, 500, 25, ctx);
-textbox.placeholderText = "Click to enter text";
+let lbl_Description = new Label(0, 90, ctx);
+lbl_Description.text = "A simple canvas UI library";
+lbl_Description.font = "30px Arial";
 
-let passwordBox = new Textbox(0, 130, 500, 25, ctx);
-passwordBox.placeholderText = "Click to enter password";
-passwordBox.isPassword = true;
+let ebl_WhatIsThis = new ExpendLabel(0, 100, canvas.width, 200, ctx);
+ebl_WhatIsThis.text = "This is a UI library created for canvas. I have made it highly extendable.";
+ebl_WhatIsThis.title = "What is this?";
 
-let helloWorldBtn = new Button(0, 180, 250, 25, ctx);
-helloWorldBtn.text = "Click here to Hello World";
-helloWorldBtn.onClick = function() {
-    alert("Hello World!");
+let btn_Download = new Button(0, canvas.height - 60, canvas.width, 60, ctx);
+btn_Download.text = "Download on GitHub";
+btn_Download.onClick = () => {
+    window.open("https://github.com/SuperPlayerHK/CanvasUI");
 }
 
-let slider = new Slider(0, 220, 500, 25, ctx);
-slider.onChange = function() {
-    console.log(slider.value);
-}
-
-let checkbox = new Checkbox(0, 260, 500, 25, ctx);
-
+let cur_Cursor = new Cursor(ctx);
+cur_Cursor.cursorWidth = 10;
 
 setInterval(() => {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    title.draw();
-    expandable.draw();
-    textbox.draw();
-    passwordBox.draw();
-    helloWorldBtn.draw();
-    slider.draw();
-    checkbox.draw();
+
+    lbl_Title.draw();
+    lbl_Description.draw();
+
+    ebl_WhatIsThis.draw();
+    btn_Download.draw();
+
+    cur_Cursor.draw();
 }, 1000 / 60)

@@ -260,9 +260,11 @@ var ExpendLabel = /** @class */ (function () {
         this.font = "20px Arial";
         this.expended = false;
         this.text = "";
+        this.title = "";
         this.textColor = "black";
         this.titleBarColor = "darkgray";
         this.contentBackgroundColor = "lightgray";
+        this.titleTextColor = "black";
         this.x = x;
         this.y = y;
         this.width = width;
@@ -290,6 +292,8 @@ var ExpendLabel = /** @class */ (function () {
         this.ctx.fillStyle = this.textColor;
         this.ctx.font = this.font;
         this.ctx.fillText(this.expended ? "-" : "+", this.x, this.y + height);
+        this.ctx.fillStyle = this.titleTextColor;
+        this.ctx.fillText(this.title, this.x + 20, this.y + height);
         if (this.expended) {
             this.ctx.fillStyle = this.contentBackgroundColor;
             this.ctx.fillRect(this.x, this.y + height, this.width, this.height);
@@ -300,4 +304,26 @@ var ExpendLabel = /** @class */ (function () {
     ExpendLabel.prototype.update = function () {
     };
     return ExpendLabel;
+}());
+var Cursor = /** @class */ (function () {
+    function Cursor(ctx) {
+        var _this = this;
+        this.mousePosition = { x: 0, y: 0 };
+        this.cursorColor = "black";
+        this.cursorWidth = 1;
+        this.isVisible = true;
+        this.ctx = ctx;
+        this.ctx.canvas.style.cursor = "none";
+        this.ctx.canvas.addEventListener('mousemove', function (e) {
+            _this.mousePosition.x = e.clientX;
+            _this.mousePosition.y = e.clientY;
+        });
+    }
+    Cursor.prototype.draw = function () {
+        this.ctx.fillStyle = this.cursorColor;
+        this.ctx.fillRect(this.mousePosition.x, this.mousePosition.y, this.cursorWidth, this.cursorWidth);
+    };
+    Cursor.prototype.update = function () {
+    };
+    return Cursor;
 }());
