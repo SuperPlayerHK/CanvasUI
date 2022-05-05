@@ -473,3 +473,75 @@ class Cursor implements UIComponent {
 
     isVisible: boolean = true;
 }
+
+class Color {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+
+    constructor(r: number = 0, g: number = 0, b: number = 0, a: number = 0) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+    toString(): string {
+        return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
+    }
+
+    toArray(): number[] {
+        return [this.r, this.g, this.b, this.a];
+    }
+}
+
+class GradientBlock implements UIComponent, UIRect {
+    draw(): void {
+        if (this.direction == "horizontal") {
+            for(let x = 0; x < this.width; x++) {
+                let r = this.startColor.r + (this.endColor.r - this.startColor.r) * x / this.width;
+                let g = this.startColor.g + (this.endColor.g - this.startColor.g) * x / this.width;
+                let b = this.startColor.b + (this.endColor.b - this.startColor.b) * x / this.width;
+                let a = this.startColor.a + (this.endColor.a - this.startColor.a) * x / this.width;
+                let col = new Color(r, g, b, a);
+    
+                this.ctx.fillStyle = col.toString();
+                this.ctx.fillRect(this.x + x, this.y, 1, this.height);
+            }
+        } else {
+            for(let y = 0; y < this.height; y++) {
+                let r = this.startColor.r + (this.endColor.r - this.startColor.r) * y / this.height;
+                let g = this.startColor.g + (this.endColor.g - this.startColor.g) * y / this.height;
+                let b = this.startColor.b + (this.endColor.b - this.startColor.b) * y / this.height;
+                let a = this.startColor.a + (this.endColor.a - this.startColor.a) * y / this.height;
+                let col = new Color(r, g, b, a);
+
+                this.ctx.fillStyle = col.toString();
+                this.ctx.fillRect(this.x, this.y + y, this.width, 1);
+            }
+        }
+    }
+
+    update(): void {
+        
+    }
+
+    constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.ctx = ctx;
+    }
+
+    ctx: CanvasRenderingContext2D;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    
+    startColor: Color = new Color(0, 0, 0, 0);
+    endColor: Color = new Color(0, 0, 0, 0);
+    direction: "horizontal" | "vertical" = "horizontal";
+}

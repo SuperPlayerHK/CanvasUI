@@ -1,4 +1,5 @@
 "use strict";
+/** Build it with the given tasks.json. */
 /**
  * Check if a point is inside a rectangle.
  * @param rect The box to check.
@@ -83,7 +84,6 @@ var Label = /** @class */ (function () {
     };
     return Label;
 }());
-
 var Button = /** @class */ (function () {
     function Button(x, y, width, height, ctx) {
         var _this = this;
@@ -328,4 +328,61 @@ var Cursor = /** @class */ (function () {
     };
     return Cursor;
 }());
-
+var Color = /** @class */ (function () {
+    function Color(r, g, b, a) {
+        if (r === void 0) { r = 0; }
+        if (g === void 0) { g = 0; }
+        if (b === void 0) { b = 0; }
+        if (a === void 0) { a = 0; }
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+    Color.prototype.toString = function () {
+        return "rgba(" + this.r + ", " + this.g + ", " + this.b + ", " + this.a + ")";
+    };
+    Color.prototype.toArray = function () {
+        return [this.r, this.g, this.b, this.a];
+    };
+    return Color;
+}());
+var GradientBlock = /** @class */ (function () {
+    function GradientBlock(x, y, width, height, ctx) {
+        this.startColor = new Color(0, 0, 0, 0);
+        this.endColor = new Color(0, 0, 0, 0);
+        this.direction = "horizontal";
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.ctx = ctx;
+    }
+    GradientBlock.prototype.draw = function () {
+        if (this.direction == "horizontal") {
+            for (var x = 0; x < this.width; x++) {
+                var r = this.startColor.r + (this.endColor.r - this.startColor.r) * x / this.width;
+                var g = this.startColor.g + (this.endColor.g - this.startColor.g) * x / this.width;
+                var b = this.startColor.b + (this.endColor.b - this.startColor.b) * x / this.width;
+                var a = this.startColor.a + (this.endColor.a - this.startColor.a) * x / this.width;
+                var col = new Color(r, g, b, a);
+                this.ctx.fillStyle = col.toString();
+                this.ctx.fillRect(this.x + x, this.y, 1, this.height);
+            }
+        }
+        else {
+            for (var y = 0; y < this.height; y++) {
+                var r = this.startColor.r + (this.endColor.r - this.startColor.r) * y / this.height;
+                var g = this.startColor.g + (this.endColor.g - this.startColor.g) * y / this.height;
+                var b = this.startColor.b + (this.endColor.b - this.startColor.b) * y / this.height;
+                var a = this.startColor.a + (this.endColor.a - this.startColor.a) * y / this.height;
+                var col = new Color(r, g, b, a);
+                this.ctx.fillStyle = col.toString();
+                this.ctx.fillRect(this.x, this.y + y, this.width, 1);
+            }
+        }
+    };
+    GradientBlock.prototype.update = function () {
+    };
+    return GradientBlock;
+}());
