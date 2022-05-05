@@ -36,6 +36,10 @@ Just call the draw method inside a loop.
 ```
 let c = new Circle(...)
 
+c.color = 'red';
+
+... code
+
 ... loop
 c.draw();
 ... other code
