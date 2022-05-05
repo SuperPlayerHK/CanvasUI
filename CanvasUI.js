@@ -211,7 +211,7 @@ var Textbox = /** @class */ (function () {
         });
         window.addEventListener('keydown', function (e) {
             e.preventDefault();
-            if (Textbox.allFunctionKeys.indexOf(e.key) != -1) {
+            if (Textbox.allFunctionKeys.indexOf(e.key) != -1 && _this.selected) {
                 switch (e.key.toLowerCase()) {
                     case "backspace":
                         _this.enteredText = _this.enteredText.slice(0, -1);

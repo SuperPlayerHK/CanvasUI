@@ -25,6 +25,9 @@ btn_Download.onClick = () => {
 let cur_Cursor = new Cursor(ctx);
 cur_Cursor.cursorWidth = 10;
 
+let tb_Input1 = new Textbox(0, 400, canvas.width, 20, ctx);
+let tb_Input2 = new Textbox(0, 430, canvas.width, 20, ctx);
+
 setInterval(() => {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -34,6 +37,9 @@ setInterval(() => {
 
     ebl_WhatIsThis.draw();
     btn_Download.draw();
+
+    tb_Input1.draw();
+    tb_Input2.draw();
 
     cur_Cursor.draw();
 }, 1000 / 60)
