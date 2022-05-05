@@ -328,4 +328,3 @@ var Cursor = /** @class */ (function () {
     };
     return Cursor;
 }());
-
