@@ -212,7 +212,10 @@ var Textbox = /** @class */ (function () {
         });
         window.addEventListener('keydown', function (e) {
             e.preventDefault();
-            if (Textbox.allFunctionKeys.indexOf(e.key) != -1 && _this.selected) {
+            if (!_this.selected) {
+                return;
+            }
+            if (Textbox.allFunctionKeys.indexOf(e.key) != -1) {
                 switch (e.key.toLowerCase()) {
                     case "backspace":
                         _this.enteredText = _this.enteredText.slice(0, -1);
@@ -229,8 +232,9 @@ var Textbox = /** @class */ (function () {
                 }
                 return;
             }
-            if (_this.selected)
+            else {
                 _this.enteredText += e.key;
+            }
         });
     }
     Textbox.prototype.draw = function () {

@@ -350,7 +350,11 @@ class Textbox implements UIComponent, UIRect {
         window.addEventListener('keydown', (e: KeyboardEvent) => {
             e.preventDefault();
 
-            if (Textbox.allFunctionKeys.indexOf(e.key) != -1 && this.selected) {
+            if (!this.selected) {
+                return;
+            }
+
+            if (Textbox.allFunctionKeys.indexOf(e.key) != -1) {
                 switch(e.key.toLowerCase()) {
                     case "backspace":
                         this.enteredText = this.enteredText.slice(0, -1);
@@ -369,10 +373,9 @@ class Textbox implements UIComponent, UIRect {
                         break;
                 }
                 return;
-            }
-
-            if (this.selected)
+            } else {
                 this.enteredText += e.key;
+            }
         })
     }
 }
