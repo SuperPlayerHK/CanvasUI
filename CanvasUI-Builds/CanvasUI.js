@@ -83,6 +83,7 @@ var Label = /** @class */ (function () {
     };
     return Label;
 }());
+
 var Button = /** @class */ (function () {
     function Button(x, y, width, height, ctx) {
         var _this = this;
