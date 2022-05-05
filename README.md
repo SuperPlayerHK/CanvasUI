@@ -1,8 +1,5 @@
 # CanvasUI
-A lightweight UI library for HTML canvas.
-
-# Also
-And it's lightweight so don't execpt much from it.
+A lightweight UI library for HTML canvas. It renders UI component purely in canvas.
 
 # Can I made my own UI elements?
 You can, just make a new class that implement UIComponent and either UIPosition or UIRect.
